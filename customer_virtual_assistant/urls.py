@@ -25,4 +25,6 @@ urlpatterns = [
     path("sendText",include('cva.urls')),
     path("demo",include('cva.urls')),
     # re_path(r'ws/socket-server/',consumers.ChatConsumer)
+      path("login/",include('cva.urls')),
+        path("register",include('cva.urls')),
 ]

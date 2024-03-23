@@ -5,31 +5,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login Page</title>
     <link rel="stylesheet" href="/static/css/login.css" />
-    <script>
-      $('.message a').click(function () {
-        $('form').animate({ height: 'toggle', opacity: 'toggle' }, 'slow')
-      })
-    </script>
   </head>
   <body>
     <div class="login-page">
       <div class="form">
-        <form class="register-form">
-          <input type="text" placeholder="name" />
-          <input type="password" placeholder="password" />
-          <input type="text" placeholder="email address" />
-          <button>create</button>
-          <p class="message">Already registered? <a href="#">Sign In</a></p>
-        </form>
-        <form class="login-form">
-          <input type="text" placeholder="username" />
-          <input type="password" placeholder="password" />
-          <button>login</button>
+
+        <form id="registration-form" class="login-form" method="POST" >
+          {% csrf_token %} 
+          <input id="name" name="name" type="text" placeholder="Name" required>
+          <input id="pass" name="pass" type="password" placeholder="Password" required>
+          <button type="submit">login</button>
           <p class="message">
-            Not registered? <a href="#">Create an account</a>
+            Not registered? <a href="register">Create an account</a>
           </p>
         </form>
       </div>
     </div>
+
+    <script>
+         document.getElementById('registration-form').addEventListener('submit', function(event) {
+          event.preventDefault(); // Prevent the default form submission
+  
+          const formData = new FormData(this);
+
+          fetch('/login', {
+              method: 'POST',
+              body: formData
+          })
+          .then(response => {
+              if (response.ok) {
+                  return response.json();
+              }
+              throw new Error('Network response was not ok.');
+          })
+          .then(data => {
+              console.log('Registration successful:', data);
+              // Optionally, you can redirect the user to another page upon successful registration
+              // window.location.href = '/login';
+          })
+          .catch(error => {
+              console.error('Error during registration:', error);
+          });
+      });
+  
+
+</script>
   </body>
 </html>

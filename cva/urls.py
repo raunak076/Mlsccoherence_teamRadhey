@@ -8,4 +8,5 @@ urlpatterns = [
     path("sendText",views.processText,name="textProcessing"),
     path("login",views.login,name="loginPage"),
     path("demo",views.lobby,name="channel"),
+    path("register",views.register,name="loginPage"),
 ]
