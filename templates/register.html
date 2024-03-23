@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Registration</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/css/login.css">
+    <script>
+       
+        
+            document.getElementById('registration-form').addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent the default form submission
+                const formData = new FormData(this);
+    
+                fetch('/register', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    throw new Error('Network response was not ok.');
+                })
+                .then(data => {
+                    console.log('Registration successful:', data);
+                    // Optionally, you can redirect the user to another page upon successful registration
+                    // window.location.href = '/login';
+                })
+                .catch(error => {
+                    console.error('Error during registration:', error);
+                });
+            });
+        
+
+    </script>
+</head>
+<body>
+    <div class="login-page">
+        <div class="form">
+            <form id="registration-form" class="login-form" method="POST" >
+                {% csrf_token %} 
+                <input id="name" name="name" type="text" placeholder="Name" required>
+                <input id="pass" name="pass" type="password" placeholder="Password" required>
+                <input id="email" name="email" type="email" placeholder="Email address" required>
+                <button type="submit">Create</button>
+                <p class="message">Already registered? <a href="login">Sign In</a></p>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
