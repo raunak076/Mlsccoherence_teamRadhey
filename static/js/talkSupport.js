@@ -1,31 +1,34 @@
+window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+const recognition = new window.SpeechRecognition();
+recognition.interimResults = true;
+
+let timeoutId; // Variable to store the timeout ID
+
 function startConvo() {
-    var recordButton = document.getElementById("recordButton");
-    // Decrease opacity
-    recordButton.style.opacity = "0.5";
-    // Disable button
-    recordButton.disabled = true;
+    document.getElementById()
+    recognition.addEventListener('result', (event) => {
+        const transcript = Array.from(event.results)
+            .map(result => result[0])
+            .map(result => result.transcript)
+            .join('');
+        console.log('Recognized words:', transcript);
 
+        // Reset the timeout if speech is detected
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+            console.log("User stopped speaking for 5 seconds.");
+            recognition.stop(); // Stop recognition after 5 seconds of silence
+        }, 5000); // Set timeout for 5 seconds
+    });
 
-    var r = document.getElementById('result');
-    var spr = new webkitSpeechRecognition(); //Initialisation of web Kit
-    spr.continuous = false; //True if continous conversion is needed, false to stop transalation when paused 
-    spr.interimResults = true;
-    spr.lang = 'en-IN'; // Set Input language
-    spr.start(); //Start Recording the voice 
-    var ftr = '';
-    spr.onresult = function (event) {
-        var interimTranscripts = '';
-        for (var i = event.resultIndex; i < event.results.length; i++) {
-            var transcript = event.results[i][0].transcript;
-            transcript.replace("\n", "<br>")
-            if (event.results[i].isFinal) {
-                ftr += transcript;
-            }
-            else
-                interimTranscripts += transcript;
-        }
-        r.innerHTML = ftr + interimTranscripts;
-    };
+    recognition.addEventListener('end', () => {
+        // Restart the recognition after it stops
+        startConvo();
+    });
 
-    spr.onerror = function (event) { };
+    recognition.start();
+}
+
+function convoLoop() {
+    startConvo();
 }
