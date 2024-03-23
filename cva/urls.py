@@ -5,5 +5,6 @@ from cva import views
 urlpatterns = [
     path("",views.index,name='home'),
     path("talk",views.supportRender,name="talk-to-support"),
-    path("sendText",views.processText,name="textProcessing")
+    path("sendText",views.processText,name="textProcessing"),
+    path("login",views.login,name="loginPage"),
 ]

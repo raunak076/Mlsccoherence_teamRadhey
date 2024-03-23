@@ -10,7 +10,9 @@ import json, requests
 
 from transformers import BartForConditionalGeneration, BartTokenizer,BartForConditionalGeneration
 
+#! model below
 model = BartForConditionalGeneration.from_pretrained("SantiagoPG/chatbot_customer_service", forced_bos_token_id=0)
+#! tokenizer below
 tok = BartTokenizer.from_pretrained("facebook/bart-large")
 
 # API_URL = "https://api-inference.huggingface.co/models/SantiagoPG/chatbot_customer_service"
@@ -22,6 +24,9 @@ def index(request):
 
 def supportRender(request):
     return render(request,"VCAmodel.html")
+
+def login(request):
+    return render(request,"login.html")
 
 def query(payload):
     response = requests.post(API_URL, headers=headers, json=payload)

@@ -19,6 +19,7 @@ from django.urls import path,include
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("",include('cva.urls')),
+    path("login",include('cva.urls')),
     path("talk",include('cva.urls')),
-    path("sendText",include('cva.urls'))
+    path("sendText",include('cva.urls')),
 ]
