@@ -1,37 +1,17 @@
-window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-const recognition = new window.SpeechRecognition();
-recognition.interimResults = true;
+function listen(){
+    var speech = true;
+    window.SpeechRecognition = window.webkitSpeechRecognition;
+    const recognition = new SpeechRecognition()
 
-let timeoutId; // Variable to store the timeout ID
+    recognition.interimResult = true;
 
-function startConvo() {
-    recognition.start();
-    recognition.addEventListener('result', (event) => {
-        const transcript = Array.from(event.results)
-            .map(result => result[0])
-            .map(result => result.transcript)
-            .join('');
-        console.log('Recognized words:', transcript);
+    recognition.addEventListener('result',e=>{
+        const transcript = Array.from(e.results)
+        .map(result => result[0])
+        .map(result => result.transcript)
+    })
 
-        // Reset the timeout when speech is detected
-        clearTimeout(timeoutId);
-        timeoutId = setTimeout(stopConvo, 5000); // Stop the conversation after 5 seconds of silence
-    });
-
-    recognition.addEventListener('end', () => {
-        startTimeout();
-    });
-}
-
-function stopConvo() {
-    recognition.stop(); // Stop the speech recognition
-}
-
-function startTimeout() {
-    // Start the timeout when the conversation ends
-    timeoutId = setTimeout(stopConvo, 5000); // Stop the conversation after 5 seconds of silence
-}
-
-function convoLoop() {
-    startConvo();
+    if(speech == true){
+        recognition.start();
+    }
 }
