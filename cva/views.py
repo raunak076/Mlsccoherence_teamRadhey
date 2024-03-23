@@ -19,19 +19,19 @@ def query(payload):
 
 @csrf_exempt
 def processText(request):
-    if request.method == "POST":
-        print(request.body)
-        json_data = request.body.decode('utf-8')
-        data = json.loads(json_data)
-        query = data.get("text")
-        print(query)
+    # if request.method == "POST":
+    #     print(request.body)
+    #     json_data = request.body.decode('utf-8')
+    #     data = json.loads(json_data)
+    #     query = data.get("text")
+    #     print(query)
         
-        try:
-            response = requests.post(API_URL, headers=headers, json={"inputs":query})
-            output = response.json()
-            return JsonResponse({'message':output})
-        except Exception as e:
-            return JsonResponse({"Message":"Sorry Unable to understand you"})
-
-    else:
-        return JsonResponse({'message':'Sorry I am unable to understand you'})
+    #     try:
+    #         response = requests.post(API_URL, headers=headers, json={"inputs":query})
+    #         output = response.json()
+    #         return JsonResponse({'message':output})
+    #     except Exception as e:
+    #         return JsonResponse({"Message":"Sorry Unable to understand you"})
+    # else:
+    #     return JsonResponse({'message':'Sorry I am unable to understand you'})
+    return JsonResponse({'Message':'Hello'})
