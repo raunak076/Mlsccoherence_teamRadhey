@@ -1,7 +1,12 @@
-from django.shortcuts import render,HttpResponse
+from django.shortcuts import render,HttpResponse,redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 import json, requests
+from django.contrib.auth.forms import UserCreationForm
+from .models import User
+from django.contrib.auth import authenticate, login
+
+
 # Load model directly
 # from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 
@@ -26,7 +31,47 @@ def supportRender(request):
     return render(request,"VCAmodel.html")
 
 def login(request):
+    if request.method == 'POST':
+        username = request.POST.get('name')
+        password = request.POST.get('pass')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            # Redirect to a success page or some other page.
+            print("Login completed")
+            return redirect('/')  # Replace 'success_url_name' with the name of your success URL
+        else:
+            # Return an 'invalid login' error message.
+            print(" not Login completed")
+            return render(request, 'login.html', {'error_message': 'Invalid username or password'})
+    else:
+        print("Login not completed")
+        return render(request, 'login.html')
     return render(request,"login.html")
+
+def register(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        password = request.POST.get('pass')
+        email = request.POST.get('email')
+
+        # Check if all required fields are provided
+        if name and password and email:
+            # Create a new user object
+            new_user = User.objects.create(
+                name=name,
+                password=password,
+                email=email
+            )
+            print("User registered successfully.")
+            # Redirect the user to a different page upon successful registration # Assuming 'login' is the name of your login page URL pattern
+        else:
+            print("One or more required fields are missing.")
+
+    # If the request method is not POST or if there are errors, render the registration form
+    form = UserCreationForm()
+    return render(request, 'register.html', {'form': form})
+
 
 def query(payload):
     response = requests.post(API_URL, headers=headers, json=payload)

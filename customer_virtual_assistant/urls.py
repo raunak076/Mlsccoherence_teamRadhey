@@ -22,4 +22,6 @@ urlpatterns = [
     path("login",include('cva.urls')),
     path("talk",include('cva.urls')),
     path("sendText",include('cva.urls')),
+      path("login/",include('cva.urls')),
+        path("register",include('cva.urls')),
 ]

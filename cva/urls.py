@@ -7,4 +7,5 @@ urlpatterns = [
     path("talk",views.supportRender,name="talk-to-support"),
     path("sendText",views.processText,name="textProcessing"),
     path("login",views.login,name="loginPage"),
+     path("register",views.register,name="loginPage"),
 ]
