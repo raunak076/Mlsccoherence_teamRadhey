@@ -54,3 +54,6 @@ def processText(request):
     else:
         return JsonResponse({'message':'Sorry I am unable to understand you'})
     return JsonResponse({'Message':'Hello'})
+
+def lobby(request):
+    return render(request,"channelDemo.html")

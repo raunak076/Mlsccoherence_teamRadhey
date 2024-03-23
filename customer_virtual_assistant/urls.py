@@ -14,7 +14,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path,include
+from django.urls import path,include,re_path
+from cva import consumers
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -22,4 +23,6 @@ urlpatterns = [
     path("login",include('cva.urls')),
     path("talk",include('cva.urls')),
     path("sendText",include('cva.urls')),
+    path("demo",include('cva.urls')),
+    # re_path(r'ws/socket-server/',consumers.ChatConsumer)
 ]

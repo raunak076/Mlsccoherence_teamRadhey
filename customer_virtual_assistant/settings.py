@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     'cva.apps.CvaConfig',
     "django.contrib.admin",
     "django.contrib.auth",
@@ -38,10 +39,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-   
 ]
 
-
+ASGI_APPLICATION = "customer_virtual_assistant.asgi.application"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
