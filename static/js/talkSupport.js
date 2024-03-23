@@ -5,7 +5,7 @@ recognition.interimResults = true;
 let timeoutId; // Variable to store the timeout ID
 
 function startConvo() {
-    document.getElementById()
+    recognition.start();
     recognition.addEventListener('result', (event) => {
         const transcript = Array.from(event.results)
             .map(result => result[0])
@@ -13,20 +13,23 @@ function startConvo() {
             .join('');
         console.log('Recognized words:', transcript);
 
-        // Reset the timeout if speech is detected
+        // Reset the timeout when speech is detected
         clearTimeout(timeoutId);
-        timeoutId = setTimeout(() => {
-            console.log("User stopped speaking for 5 seconds.");
-            recognition.stop(); // Stop recognition after 5 seconds of silence
-        }, 5000); // Set timeout for 5 seconds
+        timeoutId = setTimeout(stopConvo, 5000); // Stop the conversation after 5 seconds of silence
     });
 
     recognition.addEventListener('end', () => {
-        // Restart the recognition after it stops
-        startConvo();
+        startTimeout();
     });
+}
 
-    recognition.start();
+function stopConvo() {
+    recognition.stop(); // Stop the speech recognition
+}
+
+function startTimeout() {
+    // Start the timeout when the conversation ends
+    timeoutId = setTimeout(stopConvo, 5000); // Stop the conversation after 5 seconds of silence
 }
 
 function convoLoop() {
