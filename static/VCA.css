@@ -23,7 +23,7 @@ body{
 .modelFace{
     width: 96%;
     height: 80%;
-    background-color: black;
+    /* background-color: black; */
     border: none;
     border-radius: 10px;
     padding: 2%;
@@ -42,7 +42,7 @@ body{
 .textArea{
     width: 79%;
     height: 80px;
-    background-color: black;
+    /* background-color: black; */
     border: none;
     border-radius: 20px;
 }
