@@ -23,7 +23,7 @@ body{
 .modelFace{
     width: 96%;
     height: 80%;
-    background-color: black;
+    background-color: #edede9;
     border: none;
     border-radius: 10px;
     padding: 2%;
@@ -42,25 +42,26 @@ body{
 .textArea{
     width: 79%;
     height: 80px;
-    background-color: black;
+    background-color:#edede9;
     border: none;
     border-radius: 20px;
 }
 
 .startConvo{
-    width: 19%;
-    height: 80px;
-    /* background-color: black; */
+    width: 40px;
+    height: 40px;
+    background-color: #1cc944;
     border: none;
-    border-radius: 20px;
+    border-radius: 50%;
     overflow: hidden;
+   padding: 10%;
 }
 
 .startButton{
     width: 100%;
     height: 100%;
-    background-color: red;
     border: none;
     outline: none;
     font-weight: bold;
+    /* border-radius: 50%; */
 }
