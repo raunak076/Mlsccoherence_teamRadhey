@@ -1,3 +1,19 @@
+let url = `ws://${window.location.host}/ws/socket-server/`
+
+const chatSocket = new WebSocket(url)
+
+chatSocket.onmessage = function (e) {
+    let data = JSON.parse(e.data)
+    console.log('Data:', data)
+}
+
+// chatSocket.onopen = function () {
+//     chatSocket.send(JSON.stringify({
+//         'type':'information',
+//         'message':'Hi'
+//     }));
+// };
+
 const base_url = "http://localhost:8000"
 
 var resultDiv = document.getElementById("result");
@@ -36,7 +52,7 @@ function listen() {
     }
 }
 
-function speakUp(receivedText){
+function speakUp(receivedText) {
     const speech = new SpeechSynthesisUtterance()
     speech.text = receivedText
     window.speechSynthesis.speak(speech)
@@ -45,19 +61,31 @@ function speakUp(receivedText){
 async function sendText(transcript) {
     // Implement sending text functionality
     const data = {
-        "text":transcript.join()
+        "text": transcript.join()
     }
-    await fetch(`${base_url}/sendText`,{
-        headers:{
-            'Content-Type':'application/json'
-        },
-        method:'POST',
-        body:JSON.stringify(data)
-    }).then((response)=>{
-        const resData = response.json()
-        return resData
-    }).then((resData)=>{
-        console.log(resData['message'])
-        speakUp(resData['message'])
-    })
+    // await fetch(`${base_url}/sendText`, {
+    //     headers: {
+    //         'Content-Type': 'application/json'
+    //     },
+    //     method: 'POST',
+    //     body: JSON.stringify(data)
+    // })
+    chatSocket.send(JSON.stringify({
+        'type':'information',
+        'message':data['text']
+    }))
+
+    chatSocket.onmessage = function (e) {
+        let data = JSON.parse(e.data)
+        // console.log('Data:', data)
+        speakUp(data['message'])
+        listen()
+    }
+    // .then((response) => {
+    //     const resData = response.json()
+    //     return resData
+    // }).then((resData) => {
+    //     console.log(resData['message'])
+    //     speakUp(resData['message'])
+    // })
 }

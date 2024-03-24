@@ -1,6 +1,7 @@
 import json
 from channels.generic.websocket import WebsocketConsumer
 from asgiref.sync import async_to_sync
+from cva.views import processText
 
 class ChatConsumer(WebsocketConsumer):
     def connect(self):
@@ -19,22 +20,15 @@ class ChatConsumer(WebsocketConsumer):
         }))
    
 
-    # def receive(self, text_data):
-    #     text_data_json = json.loads(text_data)
-    #     message = text_data_json['message']
-
-    #     async_to_sync(self.channel_layer.group_send)(
-    #         self.room_group_name,
-    #         {
-    #             'type':'chat_message',
-    #             'message':message
-    #         }
-    #     )
-
-    # def chat_message(self, event):
-    #     message = event['message']
-
-    #     self.send(text_data=json.dumps({
-    #         'type':'chat',
-    #         'message':message
-    #     }))
+    def receive(self, text_data):
+        print(text_data)
+        text_data_json = json.loads(text_data)
+        print("Debugging:",text_data_json)
+        message = text_data_json['message']
+        print(message)
+        res = processText(message)
+        print(res)
+        self.send(text_data=json.dumps({
+            'type':'message_received',
+            'message':res
+        }))

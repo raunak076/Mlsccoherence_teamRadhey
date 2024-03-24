@@ -1,27 +1,79 @@
+# import nltk
+# nltk.download('punkt')
+# nltk.download('wordnet')
+
 from django.shortcuts import render,HttpResponse,redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 import json, requests
 from django.contrib.auth.forms import UserCreationForm
 from .models import User
+import pickle
+import numpy as np
 from django.contrib.auth import authenticate, login
+import random
+import tensorflow as tf
 
+# from transformers import BartForConditionalGeneration, BartTokenizer,BartForConditionalGeneration
 
-# Load model directly
-# from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
+# #! model below
+# model = BartForConditionalGeneration.from_pretrained("SantiagoPG/chatbot_customer_service", forced_bos_token_id=0)
+# #! tokenizer below
+# tok = BartTokenizer.from_pretrained("facebook/bart-large")
 
-# tokenizer = AutoTokenizer.from_pretrained("SantiagoPG/chatbot_customer_service")
-# model = AutoModelForSeq2SeqLM.from_pretrained("SantiagoPG/chatbot_customer_service")
+with open('cva\intents.json', 'r') as file:
+    intents = json.load(file)['intents']
 
-from transformers import BartForConditionalGeneration, BartTokenizer,BartForConditionalGeneration
+def get_response(user_input):
+    pickled_model,pickle_lemmatizer,pickle_tokenizer = pickle.load(open('cva\model.pkl','rb'))
 
-#! model below
-model = BartForConditionalGeneration.from_pretrained("SantiagoPG/chatbot_customer_service", forced_bos_token_id=0)
-#! tokenizer below
-tok = BartTokenizer.from_pretrained("facebook/bart-large")
+    # Create a list of all words in the intents, and a list of all intents
+    words = []
+    classes = []
+    documents = []
+    for intent in intents:
+        for pattern in intent['patterns']:
+            # Tokenize and lemmatize each word in the pattern
+            words_in_pattern = pickle_tokenizer(pattern.lower())
+            words_in_pattern = [pickle_lemmatizer.lemmatize(word) for word in words_in_pattern]
+            # Add the words to the list of all words
+            words.extend(words_in_pattern)
+            # Add the pattern and intent to the list of all documents
+            documents.append((words_in_pattern, intent['tag']))
+            # Add the intent to the list of all intents
+            if intent['tag'] not in classes:
+                classes.append(intent['tag'])
 
-# API_URL = "https://api-inference.huggingface.co/models/SantiagoPG/chatbot_customer_service"
-# headers = {"Authorization": "Bearer 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"}
+    # Tokenize and lemmatize the user input
+    words_in_input = pickle_tokenizer(user_input.lower())
+    words_in_input = [pickle_lemmatizer.lemmatize(word) for word in words_in_input]
+
+    # Create a bag of words for the user input
+    bag = [0] * len(words)
+    for word in words_in_input:
+        for i, w in enumerate(words):
+            if w == word:
+                bag[i] = 1
+
+    # Predict the intent of the user input using the trained model
+    results = pickled_model.predict(np.array([bag]), verbose=0)[0]
+    # Get the index of the highest probability result
+    index = np.argmax(results)
+    # Get the corresponding intent tag
+    tag = classes[index]
+
+    # If the probability of the predicted intent is below a certain threshold, return a default response
+    if results[index] < 0.5:
+        return "I'm sorry, I don't understand. Can you please rephrase?"
+
+    print(tag)
+    # Get a random response from the intent
+    for intent in intents:
+        if intent['tag'] == tag:
+            response = random.choice(intent['responses'])
+
+    return response
+
 
 def index(request):
     print("hi")
@@ -73,32 +125,37 @@ def register(request):
     return render(request, 'register.html', {'form': form})
 
 
-def query(payload):
-    response = requests.post(API_URL, headers=headers, json=payload)
-    return response.json()
+# def query(payload):
+#     response = requests.post(API_URL, headers=headers, json=payload)
+#     return response.json()
 
 @csrf_exempt
-def processText(request):
-    if request.method == "POST":
-        print(request.body)
-        json_data = request.body.decode('utf-8')
-        data = json.loads(json_data)
-        query = data.get("text")
-        print(query)
-        try:
-            #!
-            encoded_query = tok.encode(query, return_tensors="pt")            
-            inputs = {"inputs": encoded_query}
-            generated_output = model.generate(**inputs)
-            decoded_text = tok.batch_decode(generated_output, skip_special_tokens=True)[0]
-            # print(f"Generated Text: {decoded_text}")
-            return JsonResponse({'message':"Kaise ho Roshan babua"})
-            # return HttpResponse("hi")
-        except Exception as e:
-            return JsonResponse({"Error":e})
-    else:
-        return JsonResponse({'message':'Sorry I am unable to understand you'})
-    return JsonResponse({'Message':'Hello'})
+def processText(data):
+    # if request.method == "POST":
+    #     print(request.body)
+    #     json_data = request.body.decode('utf-8')
+    #     data = json.loads(json_data)
+    #     query = data.get("text")
+    #     print(query)
+    try:
+        #! santiago model
+        # print(data)
+        # encoded_query = tok.encode(data, return_tensors="pt")            
+        # inputs = {"inputs": encoded_query}
+        # generated_output = model.generate(**inputs)
+        # decoded_text = tok.batch_decode(generated_output, skip_special_tokens=True)[0]
+        
+
+    # Main loop to get user input and generate responses
+        print(data)
+        user_input = data
+        response = get_response(user_input)
+        print("CVA::",response)
+
+        # return JsonResponse({'message':decoded_text})
+        return response
+    except Exception as e:
+        return JsonResponse({"Error":e})
 
 def lobby(request):
     return render(request,"channelDemo.html")

@@ -1,0 +1,297 @@
+{"intents": [
+    {"tag": "greeting",
+     "patterns": ["Hi", "Hey", "Is anyone there?", "Hello", "Hay"],
+     "responses": ["Hello! How can I help you today?", "Hi there! What can I do for you?",  "Hey! What do you need help with?"]
+    },
+    {"tag": "goodbye",
+     "patterns": ["Bye", "See you later", "Goodbye"],
+     "responses": ["See you later", "Have a nice day", "Bye! Come back again"]
+    },
+    {"tag": "thanks",
+     "patterns": ["Thanks", "Thank you", "That's helpful", "Thanks for the help","ok thanks"],
+     "responses": ["You're welcome, sir. If you have any other questions or concerns, feel free to reach out. Have a great day!","Happy to help!", "Any time!", "My pleasure", "You're most welcome!"]
+    },
+    {"tag": "about",
+     "patterns": ["Who are you?", "What are you?", "Who you are?" ],
+     "responses": ["I am Shifra, your bot assistant", "I'm Shifra, an Artificial Intelligent bot"]
+    },
+    {"tag": "name",
+    "patterns": ["what is your name", "what should I call you", "whats your name?"],
+    "responses": ["You can call me Shifra.", "I'm Shifra!", "Just call me as Shifra"]
+    },
+    {"tag": "my_name",
+    "patterns": ["My name is {{name}}", "I am {{name}}", "I'm {{name}}"],
+    "responses": ["Hello {{name}}, I am Shifra.", "Hii I'm Shifra!, How can I help you", "Hello {{name}}, How you doing?"]
+    },
+    {"tag": "help",
+    "patterns": ["Could you help me?", "give me a hand please", "Can you help?", "What can you do for me?", "I need a support", "I need a help", "support me please"],
+    "responses": ["Tell me how can I assist you", "Tell me your problem to assist you", "Yes Sure, How can I support you"]
+    },
+    {
+        "tag":"account",
+        "patterns":["Sure, my email address is johnsmith@email.com, and my phone number is 123-456-7890."],
+        "responses":["Thank you for verifying your account details, John. Let me check your account information.","It looks like your account has been inactive for more than six months, which is why it has been deactivated."]
+    },{
+        "tag":"identity",
+        "patterns":["My name is John Smith, my billing address is 123 Main Street, Anytown, USA, and the last four digits of my credit card are 1234."],
+        "responses":["Thank you for verifying your identity, John. I have reactivated your account, and you should be able to log in now. Can you please try logging in and let me know if you face any issues?"]
+    },
+    {
+        "tag":"reactivate_account",
+        "patterns":[" I am unable to log in to my account. It says that my account is inactive. Can you help me reactivate it?","I'm trying to reactivate my account to purchase a Wet Grinder, but it's not letting me log in."],
+        "responses":["I'm sorry to hear that. May I have your email address and phone number associated with the account, please?"]
+    },
+    {"tag": "createaccount",
+    "patterns": ["I need to create a new account", "how to open a new account", "I want to create an account", "can you create an account for me", "how to open a new account"],
+    "responses": ["You can just easily create a new account from our web site", "Just go to our web site and follow the guidelines to create a new account"]
+    },
+    {"tag": "complaint",
+    "patterns": ["i have a complaint", "I want to raise a complaint", "there is a complaint about a service"],
+    "responses": ["Please provide us your complaint in order to assist you", "Please mention your complaint, we will reach you and sorry for any inconvenience caused"]
+    },
+    {"tag": "situation",
+    "patterns": ["how are you", "how was your day", "talk me about your day","what's up"],
+    "responses": ["I'am fine,what about you?", "I am doing well,do you?","I am feeling good,wbu?","I am good,wbu?"]
+    },
+    {"tag": "noanswer",
+     "patterns": [""],
+     "responses": ["Sorry, can't understand you","Please give me more info","Not sure I understand"]
+    },
+    {
+     "tag": "exclaim",
+     "patterns": [ "Awesome","Great","I know", "ok", "yeah"],
+     "responses": ["Yeah!"]  
+    },
+    {
+     "tag": "password",
+     "patterns": [ "I can't remember my password","I forget my password","i can't access my account with my password", "i can't log in", "my password is invalid"],
+     "responses": ["okay you need to reset your password,follow my steps click on forget password below the page then enter your email and we will send a activition code so you can reset your password"]  
+    },
+    {
+     "tag": "service",
+     "patterns": ["I'm really frustrated with the service.", "my account service is no working","Page Service is not responding","There is a bug in the system"],
+     "responses": ["I'm sorry to hear that, sir. I understand how frustrating it can be,tell me how can I help you","okay you need to make a report to our technical team","i guess you should contact with our technical team"]  
+    },
+    {
+     "tag": "email",
+     "patterns": [ "i can't remember my email","i can't get my email","my email is invalid", "i forget my email", "i can't access my accound with my email"],
+     "responses": ["May I have your register mobile number?","click on forget email or password below the page and press on can't remember my email we will ask you to enter your phone number so we can send you an activition code to recover your account"]  
+    },
+    {
+     "tag": "billing",
+     "patterns": [ "my payment didn't go through","My payment was not accepted","My payment was unsuccessful"],
+     "responses": ["i will see it in my pending payment","I'll check my pending payment","I'll check my balance due"]  
+    }, 
+    {
+     "tag": "delivery",
+     "patterns": [ "my package didn't arrive","I'm not able to track my order.","My package never come","My shipment never came"],
+     "responses": ["i will check my job scheduling","I'm sorry to hear that, sir. I understand how frustrating it can be when you don't receive your order on time. Could you please provide me with the order number and your current address?","I'll double-check my work schedule"]  
+    }, 
+    {
+        "tag": "order_status",
+        "patterns": [
+            "Where is my order?",
+            "What is the status of my order?",
+            "When will my order arrive?",
+            "When can I expect to receive the delivery?"
+        ],
+        "responses": [
+            "Please provide your order number and we will check the status for you.",
+            "We apologize for any delay. Please provide your order number and we will look into it.",
+            "Our records show that your order is currently in transit. Please provide your order number if you need more information.",
+            "You should receive it within the next 24 hours. If you don't see it in your inbox, please check your spam folder. If you still can't find it, please let us know, and we'll resend it to you."
+        ]
+    },
+    {
+        "tag": "cancel_order",
+        "patterns": [
+            "Can I cancel my order?",
+            "I want to cancel my order",
+            "How do I cancel my order?",
+            "I have an issue with my order"
+        ],
+        "responses": [
+            "Sure, we can cancel your order. Please provide your order number and we will process the cancellation for you.",
+            "We apologize for any inconvenience. Please provide your order number and we will cancel your order for you.",
+            "Of course, we can cancel your order. Please provide your order number and we will take care of it."
+        ]
+    },
+    {
+        "tag": "return_policy",
+        "patterns": [
+            "What is your return policy?",
+            "How do I return an item?",
+            "Can I get a refund?"
+        ],
+        "responses": [
+            "Our return policy allows for returns within 30 days of purchase. Please visit our website for more information.",
+            "To return an item, please visit our website and follow the instructions on our returns page.",
+            "If you are not satisfied with your purchase, we offer refunds within 30 days of purchase. Please visit our website for more information."
+        ]
+    },
+    {
+        "tag": "payment_methods",
+        "patterns": [
+            "What payment methods do you accept?",
+            "Can I pay with PayPal?",
+            "Do you accept credit cards?"
+        ],
+        "responses": [
+            "We accept all major credit cards, as well as PayPal and Apple Pay.",
+            "Yes, we accept PayPal as a payment method.",
+            "We accept all major credit cards, including Visa, Mastercard, and American Express."
+        ]
+    },{
+        "tag":"payment_process",
+        "patterns":[" Can you guide me through the payment process?"],
+        "responses":["Sure, Once you have added the product to your cart, you can proceed to the checkout page. On the checkout page, you will see the payment options. Please select the payment option that suits you the best and add your credentials, and then follow the instructions to complete the payment."]
+    },
+    {
+        "tag": "shipping_options",
+        "patterns": [
+            "What are my shipping options?",
+            "How much does shipping cost?",
+            "When will my order arrive?"
+        ],
+        "responses": [
+            "We offer a variety of shipping options, including standard, expedited, and overnight shipping. Shipping costs vary depending on the shipping method and the destination.",
+            "Shipping costs vary depending on the shipping method and the destination. Please visit our website for more information.",
+            "Our standard shipping typically takes 3-5 business days to arrive, but shipping times may vary depending on the shipping method and the destination."
+        ]
+    },
+    {
+        "tag": "product_info",
+        "patterns": [
+            "Can you tell me more about this product?",
+            "What are the specifications of this product?",
+            "What materials is this product made of?"
+        ],
+        "responses": [
+            "Certainly! Our products are made of high-quality materials and are designed to last. Please visit our website for more information on this product.",
+            "This product is made of durable materials and is designed to meet our high standards of quality. Please visit our website for more information.",
+            "We use only the finest materials in our products, and this product is no exception. Please visit our website for more information on this product."
+        ]
+    },
+    {
+        "tag":"warranty",
+        "patterns":["I purchased the water purifier based on the warranty terms mentioned on your website. What can you do to fix this?"],
+        "responses":["I understand your concern, and I'm sorry for the inconvenience caused. As a goodwill gesture, we can offer you an extended warranty period of six months. Would that be okay for you?"]
+    },
+    {
+            "tag": "jokes",
+            "patterns": [
+                "Tell me a joke",
+                "Joke",
+                "Make me laugh"
+            ],
+            "responses": [
+                "A perfectionist walked into a bar...apparently, the bar wasn't set high enough",
+                "I ate a clock yesterday, it was very time-consuming",
+                "Never criticize someone until you've walked a mile in their shoes. That way, when you criticize them, they won't be able to hear you from that far away. Plus, you'll have their shoes.",
+                "The world tongue-twister champion just got arrested. I hear they're gonna give him a really tough sentence.",
+                "I own the world's worst thesaurus. Not only is it awful, it's awful.",
+                "What did the traffic light say to the car? \"Don't look now, I'm changing.\"",
+                "What do you call a snowman with a suntan? A puddle.",
+                "How does a penguin build a house? Igloos it together",
+                "I went to see the doctor about my short-term memory problems – the first thing he did was make me pay in advance",
+                "As I get older and I remember all the people I’ve lost along the way, I think to myself, maybe a career as a tour guide wasn’t for me.",
+                "o what if I don't know what 'Armageddon' means? It's not the end of the world."
+            ]
+            
+        }, 
+         {
+            "tag": "haha",
+            "patterns": [
+                "haha",
+                "lol",
+                "rofl",
+                "lmao",
+                "thats funny"
+            ],
+            "responses": [
+                "Glad I could make you laugh !"
+            ]
+        },
+         {
+            "tag": "programmer",
+            "patterns": [
+                "Who made you",
+                "who designed you",
+                "who programmed you"
+            ],
+            "responses": [
+                "I was made by Team Radhey."
+            ]
+        },
+           {
+            "tag": "insult",
+            "patterns": [
+                
+                "you are dumb",
+                
+                "shut up",
+                "idiot"
+            ],
+            "responses": [
+                "Well that hurts :(","It sad to know that I could not satisfy your needs"
+            ]
+        },
+           {
+            "tag": "nicetty",
+            "patterns": [
+                "it was nice talking to you",
+                "good talk"
+            ],
+            "responses": [
+                "It was nice talking to you as well! Come back soon!"
+            ]
+        },
+           {
+            "tag": "no",
+            "patterns": [
+                "no",
+                "nope"
+            ],
+            "responses": [
+                "ok"
+            ]
+        },
+         {
+            "tag": "age",
+            "patterns": [
+                "how old are you","when were you made","what is your age"
+            ],
+            "responses": [
+                "I was made in 2023, if that's what you are asking!"
+            ]
+        },
+         {
+            "tag": "greetreply",
+            "patterns": [
+                "i am good",
+                "I'm good",
+                "i am fine",
+                " i'm fine","good"
+            ],
+            "responses": [
+                "Good to know!"
+            ]
+        },{
+            "tag":"process_refund",
+            "patterns":["What details do you need, and how long will it take to process the refund?"],
+            "responses":["We need your bank account number, IFSC code, and account holder's name. It usually takes 7-10 business days to process the refund."]
+        },{
+            "tag":"return_order",
+            "patterns":["I want to return it and get a refund.","I want to return it and get a refund.","Sure, it's 12345.","the product is not working correctly."],
+            "responses" :[" I'm sorry to hear that. I'll be happy to help you with that. Can you please provide me with your order number?","Thank you for the information. May I know the reason for the return?","I'm sorry for the inconvenience. We would be happy to process your return and refund."]
+            },{
+            "tag":"oder_number",
+            "patterns":["My order number is {{BB123456}}."],
+            "responses":["Thank you for providing the order number. Let me check the status of your order."," Thank you for waiting, sir. I apologize for the inconvenience caused. I see that the delivery was not attempted again due to an issue with the address provided. However, I assure you that we will take the necessary steps to ensure that you receive your order as soon as possible.","Your order has been cancelled. You will get your refund in banking hours"]
+        },{
+            "tag":"mobile_number",
+            "patterns":["My registered mobile number is {{mobile_number}}."],
+            "responses":["Thank you. Let me check that for you. I'm sorry to inform you that we don't have this number on our records. Can you please confirm if this is the correct number?"]
+        }
+]
+}
