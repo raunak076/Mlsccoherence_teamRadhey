@@ -12,6 +12,11 @@ import pickle
 import numpy as np
 from django.contrib.auth import authenticate, login
 import random
+import joblib
+import json
+import numpy as np
+from nltk.tokenize import word_tokenize
+from nltk.stem import WordNetLemmatizer
 import tensorflow as tf
 
 # from transformers import BartForConditionalGeneration, BartTokenizer,BartForConditionalGeneration
@@ -23,30 +28,82 @@ import tensorflow as tf
 
 with open('cva\intents.json', 'r') as file:
     intents = json.load(file)['intents']
+# Initialize the lemmatizer and tokenizer
+lemmatizer = WordNetLemmatizer()
+tokenizer = word_tokenize
+# Create a list of all words in the intents, and a list of all intents
+words = []
+classes = []
+documents = []
+for intent in intents:
+    for pattern in intent['patterns']:
+        # Tokenize and lemmatize each word in the pattern
+        words_in_pattern = tokenizer(pattern.lower())
+        words_in_pattern = [lemmatizer.lemmatize(word) for word in words_in_pattern]
+        # Add the words to the list of all words
+        words.extend(words_in_pattern)
+        # Add the pattern and intent to the list of all documents
+        documents.append((words_in_pattern, intent['tag']))
+        # Add the intent to the list of all intents
+        if intent['tag'] not in classes:
+            classes.append(intent['tag'])
+# Remove duplicates and sort the words and classes
+words = sorted(list(set(words)))
+classes = sorted(classes)
+# Create training data as a bag of words
+training_data = []
+for document in documents:
+    bag = []
+    # Create a bag of words for each document
+    for word in words:
+        bag.append(1) if word in document[0] else bag.append(0)
+    # Append the bag of words and the intent tag to the training data
+    output_row = [0] * len(classes)
+    output_row[classes.index(document[1])] = 1
+    training_data.append([bag, output_row])
+# Shuffle the training data and split it into input and output lists
+random.shuffle(training_data)
+training_data = np.array(training_data, dtype=object)
+train_x = list(training_data[:, 0])
+train_y = list(training_data[:, 1])
+
+# Define the neural network model
+model = tf.keras.Sequential([
+    tf.keras.layers.Dense(128, input_shape=(len(train_x[0]),), activation='relu'),
+    tf.keras.layers.Dropout(0.5),
+    tf.keras.layers.Dense(64, activation='relu'),
+    tf.keras.layers.Dropout(0.5),
+    tf.keras.layers.Dense(len(train_y[0]), activation='softmax')
+])
+# Compile the model
+model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+
+# Train the model
+model.fit(np.array(train_x), np.array(train_y), epochs=250, batch_size=5)
 
 def get_response(user_input):
-    pickled_model,pickle_lemmatizer,pickle_tokenizer = pickle.load(open('cva\model.pkl','rb'))
+    # pickled_model,pickle_tokenizer,pickle_lemmatizer = joblib.load('./model.joblib')
 
     # Create a list of all words in the intents, and a list of all intents
-    words = []
-    classes = []
-    documents = []
-    for intent in intents:
-        for pattern in intent['patterns']:
-            # Tokenize and lemmatize each word in the pattern
-            words_in_pattern = pickle_tokenizer(pattern.lower())
-            words_in_pattern = [pickle_lemmatizer.lemmatize(word) for word in words_in_pattern]
-            # Add the words to the list of all words
-            words.extend(words_in_pattern)
-            # Add the pattern and intent to the list of all documents
-            documents.append((words_in_pattern, intent['tag']))
-            # Add the intent to the list of all intents
-            if intent['tag'] not in classes:
-                classes.append(intent['tag'])
+    # words = []
+    # classes = []
+    # documents = []
+    # for intent in intents:
+    #     for pattern in intent['patterns']:
+    #         # Tokenize and lemmatize each word in the pattern
+    #         words_in_pattern = pickle_tokenizer(pattern.lower())
+    #         words_in_pattern = [pickle_lemmatizer.lemmatize(word) for word in words_in_pattern]
+    #         # Add the words to the list of all words
+    #         words.extend(words_in_pattern)
+    #         # Add the pattern and intent to the list of all documents
+    #         documents.append((words_in_pattern, intent['tag']))
+    #         # Add the intent to the list of all intents
+    #         if intent['tag'] not in classes:
+    #             classes.append(intent['tag'])
 
     # Tokenize and lemmatize the user input
-    words_in_input = pickle_tokenizer(user_input.lower())
-    words_in_input = [pickle_lemmatizer.lemmatize(word) for word in words_in_input]
+    words_in_input = tokenizer(user_input.lower())
+    words_in_input = [lemmatizer.lemmatize(word) for word in words_in_input]
 
     # Create a bag of words for the user input
     bag = [0] * len(words)
@@ -56,7 +113,7 @@ def get_response(user_input):
                 bag[i] = 1
 
     # Predict the intent of the user input using the trained model
-    results = pickled_model.predict(np.array([bag]), verbose=0)[0]
+    results = model.predict(np.array([bag]), verbose=0)[0]
     # Get the index of the highest probability result
     index = np.argmax(results)
     # Get the corresponding intent tag
