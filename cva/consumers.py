@@ -2,6 +2,7 @@ import json
 from channels.generic.websocket import WebsocketConsumer
 from asgiref.sync import async_to_sync
 from cva.views import processText
+from deep_translator import GoogleTranslator
 
 class ChatConsumer(WebsocketConsumer):
     def connect(self):
@@ -25,10 +26,21 @@ class ChatConsumer(WebsocketConsumer):
         text_data_json = json.loads(text_data)
         print("Debugging:",text_data_json)
         message = text_data_json['message']
+
+        flag = text_data_json['flag']
+
+        # translated = ''
+        if flag == 'H':
+            message = GoogleTranslator(source='auto',target='en').translate(message)
+
         print(message)
         res = processText(message)
-        print(res)
+
+        if flag == 'H':
+            res = GoogleTranslator(source='auto',target='hi').translate(res)
+            
+        # print(res)
         self.send(text_data=json.dumps({
             'type':'message_received',
-            'message':res
+            'message':res,
         }))

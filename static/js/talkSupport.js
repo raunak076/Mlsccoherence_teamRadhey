@@ -65,7 +65,6 @@ async function sendText(transcript) {
   // Implement sending text functionality
   const data = {
     text: transcript.join(),
-    flag:langFlag
   };
   // await fetch(`${base_url}/sendText`, {
   //     headers: {
@@ -78,13 +77,19 @@ async function sendText(transcript) {
     JSON.stringify({
       type: "information",
       message: data["text"],
+      flag: langFlag
     })
   );
 
   chatSocket.onmessage = async function (e) {
     let data = JSON.parse(e.data);
-    // console.log('Data:', data)
-    speakUp(data["message"]);
+    console.log('Data:', data)
+    if (langFlag == "H") {
+      speakUp(data["message"], "hi-IN");
+    }
+    else {
+      speakUp(data["message"]);
+    }
     document.getElementById("startbtn").textContent = "START";
   };
 
@@ -101,9 +106,9 @@ async function sendText(transcript) {
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-function toggleLanguage(lang){
+function toggleLanguage(lang) {
   const disButton = (lang == 'E') ? 'H' : 'E'
   document.getElementById(disButton).disabled = true
   langFlag = lang
-  alert(langFlag)
+  // alert(langFlag)
 }
