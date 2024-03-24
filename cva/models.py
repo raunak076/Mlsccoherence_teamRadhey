@@ -10,7 +10,7 @@ class User(models.Model):
     
 class context(models.Model):
     email = models.CharField(max_length=128)
-    contextText = models.CharField(max_length=1024)
+    userT = models.CharField(max_length=1024,default="")
+    agentT = models.CharField(max_length=1024,default="")
     def __str__(self):
-        return self.email+"-"+self.contextText
-
+        return self.email+"-"+self.userT

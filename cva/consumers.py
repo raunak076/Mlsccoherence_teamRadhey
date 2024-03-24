@@ -3,6 +3,7 @@ from channels.generic.websocket import WebsocketConsumer
 from asgiref.sync import async_to_sync
 from cva.views import processText
 from deep_translator import GoogleTranslator
+from cva.models import context
 
 class ChatConsumer(WebsocketConsumer):
     def connect(self):
@@ -36,8 +37,16 @@ class ChatConsumer(WebsocketConsumer):
         print(message)
         res = processText(message)
 
+        newContext = context(
+                email="demo@gmail.com",
+                userT=message,
+                agentT=res
+            )
+        newContext.save()
         if flag == 'H':
             res = GoogleTranslator(source='auto',target='hi').translate(res)
+
+        
             
         # print(res)
         self.send(text_data=json.dumps({
