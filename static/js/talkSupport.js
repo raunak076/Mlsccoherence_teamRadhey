@@ -2,6 +2,8 @@ let url = `ws://${window.location.host}/ws/socket-server/`;
 
 const chatSocket = new WebSocket(url);
 
+var langFlag = ""
+
 chatSocket.onmessage = function (e) {
   let data = JSON.parse(e.data);
   console.log("Data:", data);
@@ -63,6 +65,7 @@ async function sendText(transcript) {
   // Implement sending text functionality
   const data = {
     text: transcript.join(),
+    flag:langFlag
   };
   // await fetch(`${base_url}/sendText`, {
   //     headers: {
@@ -92,4 +95,15 @@ async function sendText(transcript) {
   //     console.log(resData['message'])
   //     speakUp(resData['message'])
   // })
+}
+
+
+
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+function toggleLanguage(lang){
+  const disButton = (lang == 'E') ? 'H' : 'E'
+  document.getElementById(disButton).disabled = true
+  langFlag = lang
+  alert(langFlag)
 }

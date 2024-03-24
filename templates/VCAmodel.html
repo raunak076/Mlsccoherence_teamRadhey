@@ -1,38 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Welcome to the Virtual Assitant</title>
-    <link rel="stylesheet" href="/static/VCA.css">
+    <link rel="stylesheet" href="/static/VCA.css" />
     <script src="/static/js/talkSupport.js"></script>
-</head>
-<body>
+  </head>
+  <body>
     <div class="main">
-        <h1>Welcome to your vistual Customer Assistant </h1>
-        <div class="convBox">
-            <div class="modelFace">
-                    <div class="userchat"><p>
-                        Hello !
-                    </p></div>
-                    <div class="aichat">
-                        <p>
-                           Hi!
-                        </p>
-                    </div>
-            </div>
-            <div class="textBox">
-                <div class="textArea" id="result">
-                    
-                </div>
-                <div class="startConvo">
-                    <button id="startbtn" class="startButton" onclick="listen()">
-                       start
-                    </button>
-                </div>
-            </div>
+      <h1>Welcome to your vistual Customer Assistant</h1>
+      <div style="display: flex; width: 400px; justify-content: space-between;">
+        <button id="H" onclick="toggleLanguage('H')">HINDI</button>
+        <button id="E" onclick="toggleLanguage('E')">ENGLISH</button>
+      </div>
+      <div class="convBox">
+        <div class="modelFace">
+          <div class="userchat"><p>Hello !</p></div>
+          <div class="aichat">
+            <p>Hi!</p>
+          </div>
         </div>
+        <div class="textBox">
+          <div class="textArea" id="result"></div>
+          <div class="startConvo">
+            <button id="startbtn" class="startButton" onclick="listen()">
+              START
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
-   
-</body>
+  </body>
 </html>
